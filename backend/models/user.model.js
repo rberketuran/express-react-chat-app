@@ -18,8 +18,12 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
-}, {timestamps: true});
+    },
+    profilePic: {
+        type: String,
+        default: 'https://res.cloudinary.com/djz3p9q92/image/upload/v1630656480/avatars/avatar-1_zv6y8v.png'
+    },
+}, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);
 
