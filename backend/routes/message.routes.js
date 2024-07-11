@@ -8,4 +8,5 @@ const router = express.Router();
 router.post('/send/:id', protect, sendMessage);
 router.get('/:id', protect, getMessages);
 
+
 export default router;
