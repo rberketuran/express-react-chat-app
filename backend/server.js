@@ -9,9 +9,9 @@ import userRoutes from './routes/user.routes.js';
 
 import connectDB from './db/connectToDB.js';
 
+dotenv.config();
 const PORT = process.env.PORT || 3000;
 
-dotenv.config();
 
 const app = express();
 
