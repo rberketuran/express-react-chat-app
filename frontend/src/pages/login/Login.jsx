@@ -22,7 +22,7 @@ const Login = () => {
                     <a href="#" className="text-sm text-gray-200 hover:underline hover:text-blue-500"> {"Don't"} have an account? </a>
 
                     <div>
-                        <button className="w-full btn btn-secondary">Login</button>
+                        <button className="w-full btn btn-primary">Login</button>
                     </div>
                 </form>
             </div>

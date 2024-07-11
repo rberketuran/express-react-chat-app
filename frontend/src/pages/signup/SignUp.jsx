@@ -1,8 +1,8 @@
 const SignUp = () => {
     return (
         <div className="flex flex-col items-center justify-center min-w-96 mx-auto">
-            <div className="w-full p-6 shadow-md bg-gray-500 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-0 border border-gray-100">
-                <h1 className="text-3xl font-semibold text-center text-gray-200">Sign Up</h1>
+            <div className="w-full p-6 shadow-md bg-gray-500 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0 border border-gray-100">
+                <h1 className="text-3xl font-semibold text-center text-gray-100">Sign Up</h1>
 
                 <form className="flex flex-col space-y-4">
 
@@ -44,7 +44,7 @@ const SignUp = () => {
                     <a href="#" className="text-sm text-gray-200 hover:underline hover:text-blue-500"> Already have an account? </a>
 
                     <div>
-                        <button className="w-full btn btn-secondary">Sign Up</button>
+                        <button className="w-full btn btn-primary">Sign Up</button>
                     </div>
                 </form>
             </div>
