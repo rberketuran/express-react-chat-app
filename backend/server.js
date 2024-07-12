@@ -8,12 +8,11 @@ import messageRoutes from './routes/message.routes.js';
 import userRoutes from './routes/user.routes.js';
 
 import connectDB from './db/connectToDB.js';
+import { app, server } from './socket/socket.js';
+
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
-
-
-const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -25,7 +24,7 @@ app.use('/api/v1/users', userRoutes);
 
 
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     connectDB();
     console.log(`Server is running on http://localhost:${PORT}`);
 })
