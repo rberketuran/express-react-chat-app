@@ -1,5 +1,5 @@
-import Message from '../models/message.model.js';
-import Conversation from '../models/conversation.model.js';
+import Conversation from "../models/conversation.model.js";
+import Message from "../models/message.model.js";
 
 export const sendMessage = async (req, res) => {
     try {
@@ -7,61 +7,57 @@ export const sendMessage = async (req, res) => {
         const { id: receiverId } = req.params;
         const senderId = req.user._id;
 
-        console.log("senderId", senderId, "receiverId", receiverId, "message", message);
-        if (!message) {
-            return res.status(400).json({ message: 'Message is required' });
-        }
-
         let conversation = await Conversation.findOne({
-            members: { $all: [senderId, receiverId] }
+            members: { $all: [senderId, receiverId] },
         });
 
         if (!conversation) {
-            conversation = await Conversation.create({ members: [senderId, receiverId] });
+            conversation = await Conversation.create({
+                members: [senderId, receiverId],
+            });
         }
 
         const newMessage = new Message({
             senderId,
             receiverId,
-            message
+            message,
         });
-        
-        if(newMessage) {
+
+        if (newMessage) {
             conversation.messages.push(newMessage._id);
         }
 
-        await Promise.all([newMessage.save(), conversation.save()]);
+        // SOCKET IO FUNCTIONALITY WILL GO HERE
 
-        res.status(201).json({ message: 'Message sent successfully' });
+        // await conversation.save();
+        // await newMessage.save();
 
+        // this will run in parallel
+        await Promise.all([conversation.save(), newMessage.save()]);
+
+        res.status(201).json(newMessage);
     } catch (error) {
-        console.error("Error in sendMessage", error);
-        res.status(500).json({ message: 'Internal server error' });
+        console.log("Error in sendMessage controller: ", error.message);
+        res.status(500).json({ error: "Internal server error" });
     }
-
-}
+};
 
 export const getMessages = async (req, res) => {
     try {
-        const { id: receiverId } = req.params;
+        const { id: userToChatId } = req.params;
         const senderId = req.user._id;
 
-        const conversations = await Conversation.findOne({
-            members: { $all: [senderId, receiverId] }
-        }).populate('messages');
+        const conversation = await Conversation.findOne({
+            members: { $all: [senderId, userToChatId] },
+        }).populate("messages"); // NOT REFERENCE BUT ACTUAL MESSAGES
 
-        if (!conversations) {
-            return res.status(200).json({ messages: [] });
-        }
+        if (!conversation) return res.status(200).json([]);
 
-        const messages = conversations.messages;
-        res.status(200).json({ messages });
+        const messages = conversation.messages;
 
-
-        res.status(200).json({ conversations });
+        res.status(200).json(messages);
     } catch (error) {
-        console.error("Error in getMessages", error);
-        res.status(500).json({ message: 'Internal server error' });
-        
+        console.log("Error in getMessages controller: ", error.message);
+        res.status(500).json({ error: "Internal server error" });
     }
-}
+};
