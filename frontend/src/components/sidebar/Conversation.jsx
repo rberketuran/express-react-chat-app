@@ -14,7 +14,7 @@ const Conversation = ({ conversation, lastIdx, emoji }) => {
                 <div className="avatar online">
                     <div className="w-12 rounded-full">
                         {/*update img src */}
-                        <img src={conversation.profilePic} alt="user avatar" />
+                        <img src="pp.png" alt="user avatar" />
                     </div>
                 </div>
 
