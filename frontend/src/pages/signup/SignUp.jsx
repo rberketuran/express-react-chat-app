@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import useSignup from "../../hooks/useSignup"
+import GenderCheckbox from "./GenderCheckbox"
 
 const SignUp = () => {
 
@@ -9,10 +10,15 @@ const SignUp = () => {
         username: '',
         email: '',
         password: '',
-        passwordconfirm: ''
+        passwordconfirm: '',
+        gender: ''
     })
 
     const { loading, signup } = useSignup()
+
+    const handleCheckboxChange = (gender) => {
+        setInputs({ ...inputs, gender });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -21,7 +27,7 @@ const SignUp = () => {
 
     return (
         <div className="flex flex-col items-center justify-center min-w-96 mx-auto">
-            <div className="w-full p-6 shadow-md bg-gray-500 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0 border border-gray-100">
+            <div className="w-full p-6 shadow-md bg-gray-500 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0 border border-gray-300">
                 <h1 className="text-3xl font-semibold text-center text-gray-100">Sign Up</h1>
 
                 <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
@@ -69,6 +75,8 @@ const SignUp = () => {
                             value={inputs.passwordconfirm} onChange={(e) => setInputs({ ...inputs, passwordconfirm: e.target.value })}
                         />
                     </div>
+
+                    <GenderCheckbox onCheckboxChange={handleCheckboxChange} selectedGender={inputs.gender} />
 
                     <Link to="/login" className="text-sm text-gray-200 hover:underline hover:text-blue-500"> Already have an account? </Link>
 

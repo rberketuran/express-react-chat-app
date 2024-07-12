@@ -19,7 +19,7 @@ const Conversation = ({ conversation, lastIdx, emoji }) => {
                 <div className={`avatar ${isOnline ? "online" : ""}`}>
                     <div className="w-12 rounded-full">
                         {/*update img src */}
-                        <img src="pp.png" alt="user avatar" />
+                        <img src={conversation.profilePic} alt="user avatar" />
                     </div>
                 </div>
 

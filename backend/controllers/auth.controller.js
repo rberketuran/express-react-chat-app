@@ -4,9 +4,9 @@ import generateJwt from '../utils/generateJwt.js';
 
 const signup = async (req, res) => {
     try {
-        const { fullname, username, email, password, passwordconfirm } = req.body;
+        const { fullname, username, email, password, passwordconfirm, gender } = req.body;
 
-        if (!fullname || !username || !email || !password || !passwordconfirm) {
+        if (!fullname || !username || !email || !password || !passwordconfirm || !gender) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
@@ -23,7 +23,13 @@ const signup = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const user = await User.create({ fullname, username, email, password: hashedPassword });
+        const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`;
+        const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+
+        const user = await User.create({
+            fullname, username, email, password: hashedPassword, gender,
+            profilePic: gender === "male" ? boyProfilePic : girlProfilePic,
+        });
 
         if (user) {
             generateJwt(user._id, res);
@@ -33,7 +39,8 @@ const signup = async (req, res) => {
                     _id: user._id,
                     fullname: user.fullname,
                     username: user.username,
-                    email: user.email
+                    email: user.email,
+                    profilePic: user.profilePic,
                 }
             });
         }
