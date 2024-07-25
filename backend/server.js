@@ -10,11 +10,11 @@ import userRoutes from './routes/user.routes.js';
 import connectDB from './db/connectToDB.js';
 import { app, server } from './socket/socket.js';
 
+dotenv.config();
 const PORT = process.env.PORT || 3000;
 
 const __dirname = path.resolve();
 
-dotenv.config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

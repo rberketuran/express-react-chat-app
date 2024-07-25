@@ -1,9 +1,15 @@
+import { useLocation } from "react-router-dom";
 import useGetConversations from "../../hooks/useGetConversations";
 import { getRandomEmoji } from "../../utils/emojis";
 import Conversation from "./Conversation";
 
 const Conversations = () => {
-    const { loading, conversations } = useGetConversations();
+    const location = useLocation();
+    const shouldFetch = location.pathname !== '/signup';
+    const { loading, conversations } = useGetConversations(shouldFetch);
+    if (!shouldFetch) {
+        return null;
+    }
     return (
         <div className='py-2 flex flex-col overflow-auto'>
             {conversations.map((conversation, idx) => (

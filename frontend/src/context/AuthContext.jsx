@@ -26,7 +26,9 @@ export const AuthContextProvider = ({ children }) => {
                         // Token expired
                         Cookies.remove('token');
                         setAuthUser(null);
-                        navigate('/login');
+                        if (location.pathname !== '/signup') {
+                            navigate('/login');
+                        }
                     } else {
                         // Token is valid
                         setAuthUser(decodedToken);
@@ -35,10 +37,14 @@ export const AuthContextProvider = ({ children }) => {
                     console.error('Error decoding token:', error);
                     Cookies.remove('token');
                     setAuthUser(null);
-                    navigate('/login');
+                    if (location.pathname !== '/signup') {
+                        navigate('/login');
+                    }
                 }
             } else {
-                navigate('/login');
+                if (location.pathname !== '/signup') {
+                    navigate('/login');
+                }
             }
         };
         checkToken();
