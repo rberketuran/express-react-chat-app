@@ -1,5 +1,8 @@
 /* eslint-disable react/prop-types */
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
+import Cookies from 'js-cookie';
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 export const AuthContext = createContext();
 
@@ -9,10 +12,41 @@ export const useAuthContext = () => {
 }
 
 export const AuthContextProvider = ({ children }) => {
-    const [authUser, setAuthUser] = useState(JSON.parse(localStorage.getItem('chatUser')) || null);
+    const [authUser, setAuthUser] = useState(null);
+    const navigate = useNavigate();
 
-    return <AuthContext.Provider value={{ authUser, setAuthUser }}>
-        {children}
+    useEffect(() => {
+        const checkToken = () => {
+            const token = Cookies.get('token');
+            if (token) {
+                try {
+                    const decodedToken = jwtDecode(token);
+                    const currentTime = Date.now() / 1000;
+                    if (decodedToken.exp < currentTime) {
+                        // Token expired
+                        Cookies.remove('token');
+                        setAuthUser(null);
+                        navigate('/login');
+                    } else {
+                        // Token is valid
+                        setAuthUser(decodedToken);
+                    }
+                } catch (error) {
+                    console.error('Error decoding token:', error);
+                    Cookies.remove('token');
+                    setAuthUser(null);
+                    navigate('/login');
+                }
+            } else {
+                navigate('/login');
+            }
+        };
+        checkToken();
+    }, [navigate]);
 
-    </AuthContext.Provider>;
+    return (
+        <AuthContext.Provider value={{ authUser, setAuthUser }}>
+            {children}
+        </AuthContext.Provider>
+    );
 }

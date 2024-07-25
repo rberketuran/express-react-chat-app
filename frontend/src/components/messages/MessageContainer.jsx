@@ -16,12 +16,19 @@ const MessageContainer = () => {
     }, [setSelectedConversation]);
 
     return (
-        <div className="md:min-w-[450px] flex flex-col">
+        <div className={`md:min-w-[450px] flex flex-col w-full ${!selectedConversation ? 'hidden md:flex' : 'flex'}`}>
             {!selectedConversation ? <NoChatSelected /> :
                 (<>
                     {/* Header */}
-                    <div className="bg-slate-300 px-4 py-2 mb-2">
-                        <span className="label-text ">To:</span> <span className="text-gray-900 font-bold">{selectedConversation.fullname}</span>
+                    <div className="bg-slate-300 px-4 py-2 mb-2 flex items-center">
+                        <button
+                            onClick={() => setSelectedConversation(null)}
+                            className="md:hidden text-gray-900 font-bold mr-2"
+                        >
+                            ←
+                        </button>
+                        <span className="label-text">To:</span>
+                        <span className="text-gray-900 font-bold ml-2">{selectedConversation.fullname}</span>
                     </div>
 
                     <Messages />

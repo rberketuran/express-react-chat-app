@@ -32,7 +32,7 @@ const signup = async (req, res) => {
         });
 
         if (user) {
-            generateJwt(user._id, res);
+            generateJwt(user, res);
             return res.status(201).json({
                 message: 'Signup successful',
                 user: {
@@ -71,7 +71,7 @@ const login = async (req, res) => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        generateJwt(user._id, res);
+        generateJwt(user, res);
         return res.status(200).json({ message: 'Login successful', user });
 
     } catch (error) {

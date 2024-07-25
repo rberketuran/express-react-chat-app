@@ -22,9 +22,8 @@ const useSignup = () => {
             });
 
             const data = await res.json();
-
-            if (data.error) {
-                throw new Error(data.error);
+            if (!res.ok) {
+                throw new Error(data.message);
             }
 
             localStorage.setItem('chatUser', JSON.stringify(data.user));
@@ -38,7 +37,7 @@ const useSignup = () => {
             }
 
         } catch (error) {
-            toast.error('An error occurred. Please try again.');
+            toast.error(error.message);
         } finally {
             setLoading(false);
         }
